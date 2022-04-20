@@ -1,0 +1,54 @@
+class Pet{
+    constructor(id, name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    getId() {
+        return this.id;
+    }
+    setId(id) {
+        this.id = id;
+    }
+    getName() {
+        return this.name;
+    }
+    setName(name) {
+        this.name = name;
+    }
+}
+
+var jsonData = JSON.parse(responseBody)
+
+function getAllNames(jsonData){
+    var nombre = [];
+    for(var i = 0; i < jsonData.length; i++) {
+        var myPet = new Pet(jsonData[i].id, jsonData[i].name);        
+        nombre.push(myPet.getName());
+        
+    }
+    return nombre;
+}
+
+function counted(allNombres, nombre){
+    {
+    if (nombre in allNombres) {
+        allNombres[nombre]++
+    }
+    else {
+        allNombres[nombre] = 1
+    }
+    return allNombres
+    }
+}
+
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+    var nombres = getAllNames(jsonData);
+    console.log("Objeto tipo tupla que representa: ");
+    console.log("'key' -> el nombre de las mascotas");
+    console.log("'value'-> el número de veces que aparece esta mascota");
+    
+    var countedNames = nombres.reduce(counted, {}); 
+    console.log(countedNames); 
+});

@@ -1,0 +1,41 @@
+// RESPONSEJSON PARA JAVASCRIPT
+//const responseJson = pm.response.json();
+var jsonData = JSON.parse(responseBody)
+
+console.log("----------Response Body obtenido----------")
+console.log(jsonData);
+
+function recogernombre(json){
+    let lista_nombre = [];
+    for(var i = 0; i < jsonData.length; i++) {
+        var obj = jsonData[i];
+        lista_nombre.push(obj.name);
+        //console.log("Nombre " + i + ": " + obj.name);
+    }
+    return lista_nombre;
+    
+}
+
+function recogerid(json){
+    let lista_id = [];
+    for(var i = 0; i < jsonData.length; i++) {
+        var obj = jsonData[i];
+        lista_id.push(obj.id);
+        //console.log("Id " + i + ": " + obj.id);
+    }
+    return lista_id;
+    
+}
+
+pm.test("Status code is 200", function () {
+  pm.response.to.have.status(200);
+
+  var listaid = recogerid(jsonData);
+  var listanombre = recogernombre(jsonData);
+
+  var result = {};
+  listaid.forEach((listaid, i) => result[listaid] = listanombre[i]);
+  console.log("----------Solución----------");
+  console.log(result);
+  
+});
